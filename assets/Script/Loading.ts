@@ -2,7 +2,7 @@
  * @Autor: Rao
  * @Date: 2021-04-03 14:44:31
  * @LastEditors: Rao
- * @LastEditTime: 2021-04-18 10:05:39
+ * @LastEditTime: 2021-05-18 11:52:12
  * @Description: 
  */
 
@@ -15,10 +15,14 @@ export default class Loading extends cc.Component {
 
     @property(cc.ProgressBar)
     progressBar: cc.ProgressBar=null;
-
+    
     onLoad () {
+        let progressCountN = this.node.getChildByName('progressCount');
+        let progressCountLab = progressCountN.getComponent(cc.Label);
+
         cc.resources.loadDir('./', (finishCount: number, totalCount: number, item):void=>{
                 this.progressBar.progress = finishCount/totalCount; 
+                progressCountLab.string = finishCount+'/'+totalCount;
             }, 
             (err, assets)=>{
                 if(err) {

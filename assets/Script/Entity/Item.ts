@@ -2,7 +2,7 @@
  * @Autor: Rao
  * @Date: 2021-04-07 10:19:54
  * @LastEditors: Rao
- * @LastEditTime: 2021-04-12 10:28:17
+ * @LastEditTime: 2021-05-17 11:27:00
  * @Description: 
  */
 
@@ -15,21 +15,23 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Item extends GameComponent {
 
+    private isRelaxScene: boolean;
     private _id: number;
     private _type: number;
     private _buff: number;
+
     props = {
         id: this._id,
         type: this._type,
         lifeBuff: this._buff,
         ackBuff: this._buff,
-        hpBuff: this._buff,
+        expBuff: this._buff,
         timeBuff: this._buff,
     }
     buffMap = {
         1: 'lifeBuff',
         2: 'ackBuff',
-        3: 'hpBuff',
+        3: 'expBuff',
         4: 'timeBuff',
     }
     
@@ -49,12 +51,11 @@ export default class Item extends GameComponent {
         return this.props['type'];
     }
     get buff() {
-        let rst = this.props[this.buffMap[this.id]];
+        let rst = this.props[this.buffMap[this.type]];
         return rst ? rst:0;
     }
     
-    // moveVel:number = -350;    
-    moveDst:number = 2;
+    moveVel:number = -160;    
 
     listEvent(){
         return ['removeItem'];
@@ -67,21 +68,26 @@ export default class Item extends GameComponent {
 
     onLoad () {
         // GameComponent.prototype.onLoad.call(this);
-    
-        let ground = cc.find('Canvas/Game/RelaxScene/ground');
-        this.node.x = cc.winSize.width;
-        let minY = ground && ground.height/2+this.node.height/2;
-        let maxY = minY + 120;
-        let posY = Math.floor(Math.random()*(maxY-minY)+minY);
-        this.node.y = posY;
+        this.isRelaxScene = this.node.parent.name === 'RelaxScene';
+        if (this.isRelaxScene) {
+            let ground = cc.find('Canvas/Game/RelaxScene/ground');
+            this.node.x = cc.winSize.width;
+            let minY = ground && ground.height/2+this.node.height/2;
+            let maxY = minY + 120;
+            let posY = Math.floor(Math.random()*(maxY-minY)+minY);
+            this.node.y = posY;
+            this.node.scale = 1.5;
+        }
+        
         this.initWithData();
     }
 
     update (dt) {
-        // this.node.x += this.moveVel*dt;
-        this.node.x -= this.moveDst;
-        if (this.node.x < -this.node.width) {
-            this.removeItem();
+        if (this.isRelaxScene) {
+            this.node.x += this.moveVel*dt;
+            if (this.node.x < -this.node.width) {
+                this.removeItem();
+            }
         }
     }
 

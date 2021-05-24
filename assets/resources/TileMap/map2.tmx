@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="left-down" width="20" height="28" tilewidth="48" tileheight="48" infinite="0" nextobjectid="77">
+ <tileset firstgid="1" name="bg" tilewidth="48" tileheight="48" tilecount="4" columns="2">
+  <image source="bg.png" width="96" height="96"/>
+ </tileset>
+ <layer name="bg" width="20" height="28">
+  <data encoding="csv">
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+</data>
+ </layer>
+ <objectgroup name="rail">
+  <object id="1" name="rail" x="457" y="1098">
+   <point/>
+  </object>
+  <object id="2" name="rail" x="749" y="981">
+   <point/>
+  </object>
+  <object id="3" name="rail" x="174" y="979">
+   <point/>
+  </object>
+  <object id="4" name="rail" x="265" y="805">
+   <point/>
+  </object>
+  <object id="5" name="rail" x="648" y="792">
+   <point/>
+  </object>
+  <object id="6" name="rail" x="120" y="656">
+   <point/>
+  </object>
+  <object id="7" name="rail" x="745" y="656">
+   <point/>
+  </object>
+  <object id="8" name="rail" x="449" y="546">
+   <point/>
+  </object>
+  <object id="9" name="rail" x="213" y="357">
+   <point/>
+  </object>
+  <object id="10" name="rail" x="748" y="347">
+   <point/>
+  </object>
+  <object id="11" name="rail" x="455" y="214">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup name="monster">
+  <object id="12" name="monster" x="457" y="1034">
+   <point/>
+  </object>
+  <object id="13" name="monster" x="175" y="924">
+   <point/>
+  </object>
+  <object id="14" name="monster" x="646" y="710">
+   <point/>
+  </object>
+  <object id="15" name="monster" x="123" y="593">
+   <point/>
+  </object>
+  <object id="16" name="monster" x="743" y="611">
+   <point/>
+  </object>
+  <object id="17" name="monster" x="449" y="494">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup name="money">
+  <object id="66" name="money" x="77" y="843">
+   <point/>
+  </object>
+  <object id="67" name="money" x="846" y="843">
+   <point/>
+  </object>
+  <object id="68" name="money" x="264" y="703">
+   <point/>
+  </object>
+  <object id="69" name="money" x="267" y="544">
+   <point/>
+  </object>
+  <object id="70" name="money" x="645" y="462">
+   <point/>
+  </object>
+  <object id="71" name="money" x="266" y="264">
+   <point/>
+  </object>
+  <object id="72" name="money" x="746" y="264">
+   <point/>
+  </object>
+  <object id="73" name="money" x="416" y="156">
+   <point/>
+  </object>
+  <object id="74" name="money" x="510" y="156">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup name="item">
+  <object id="75" name="item2" x="412" y="649">
+   <point/>
+  </object>
+  <object id="76" name="item1" x="452" y="362">
+   <point/>
+  </object>
+ </objectgroup>
+</map>

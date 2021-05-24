@@ -2,7 +2,7 @@
  * @Autor: Rao
  * @Date: 2021-04-10 09:18:32
  * @LastEditors: Rao
- * @LastEditTime: 2021-04-12 09:59:15
+ * @LastEditTime: 2021-05-22 23:29:52
  * @Description: 
  */
 
@@ -13,7 +13,6 @@ import ResMgr from "../Manager/ResMgr";
 
 @ccclass
 export default class ItemPool extends cc.Component {
-
     itemNodes = new Map();
     
     static instance: ItemPool = null;

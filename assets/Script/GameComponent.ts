@@ -2,7 +2,7 @@
  * @Autor: Rao
  * @Date: 2021-04-04 13:40:17
  * @LastEditors: Rao
- * @LastEditTime: 2021-04-12 21:42:02
+ * @LastEditTime: 2021-05-16 11:29:43
  * @Description: 
  */
 import EventMgr from "./Manager/EventMgr";
@@ -13,14 +13,12 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class GameComponent extends cc.Component {
     uiNodes = {};
-    
+
     onLoad() {
         this.bindUINodes(this.node, '');
         this.addEventListner();
     }
-    start() {
-        //this.start();
-    }
+    
     bindUINodes(root: cc.Node, path: string) {
         let nodes = root.children;
         for (let i = 0; i < nodes.length; ++i) {
@@ -34,7 +32,7 @@ export default class GameComponent extends cc.Component {
     getRootNode() {
         let root = this.node.getChildByName('Game');
         if (root) {
-            return root
+            return root;
         }
     }
     
@@ -66,7 +64,14 @@ export default class GameComponent extends cc.Component {
             }
         }
     }
-
-
+    removeEvent() {
+        let events = this.listEvent();
+        if(!events) {
+            return;
+        }
+        for (let i = 0; i < events.length; i++) {
+            EventMgr.getInstance().removeEventListener(events[i], this);
+        }
+    }
     
 }

@@ -4,6 +4,8 @@
         "hp": 10,
         "ack": 100,
         "curExp": 0,
-        "needExp": 100
+        "needExp": 160,
+        "level": 0,
+        "score": 0
     }
 ]

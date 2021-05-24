@@ -1,3 +1,10 @@
+/*
+ * @Autor: Rao
+ * @Date: 2021-04-06 13:29:22
+ * @LastEditors: Rao
+ * @LastEditTime: 2021-05-19 21:58:36
+ * @Description:'
+ */
 
 import GameComponent from "../GameComponent";
 import UIMgr from "./UIMgr";
@@ -9,23 +16,34 @@ export default class GameMgr extends GameComponent {
 
     onLoad () {
         GameComponent.prototype.onLoad.call(this);
-        UIMgr.getInstance().openUINode(this.node, 'GameMenu');
+        UIMgr.getInstance().openUINode(this.node, 'GameMenu', 'layer');
     }
-
+    
     listEvent() {
-        return ['openRelaxMenu','openAdventureMenu', 'openRelaxScene', 'openAdventureScene', 'openPauseScene'];
+        return ['openRelaxMenu','openAdventureMenu', 'openRelaxScene', 'openAdventureScene', 
+        'openPauseScene','callFuncObstacle','openGameMenu', 'openGameOverScene','openHeroInfoScene','openGameSetting'];
     }
     onEvent(event:string, params) {
         if(event.startsWith('open')) {
-            let parentNode = params ? params : this.node;
-            UIMgr.getInstance().openUINode(parentNode, event.substr(4));
-        }
-        else if (true) {
+            let parentNode = params.parentNode ? params.parentNode : this.node;
+            !params.uiType && UIMgr.getInstance().closeUINode(params.curNode);
+            UIMgr.getInstance().openUINode(parentNode, event.substr(4), params.uiType);
+            //!params.isRetain && UIMgr.getInstance().closeUINode(params.curNode);
             
+        }
+        else if (event.startsWith('callFunc')) {
+            let path = 'Canvas/Game/'+params.scene+'/'+params.nodeName;
+            let node = cc.find(path);
+            let ts:any = node.getComponent(params.tsName);
+            let funcName = params.funcName;
+            let func = ts.getFuncByName(funcName);
+            func.call(ts, params.args);
         }
     }
 
-    start () {
+    
 
+    onDestroy () {
+        GameComponent.prototype.removeEvent.call(this);
     }
 }

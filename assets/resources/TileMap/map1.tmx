@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="left-down" width="20" height="21" tilewidth="48" tileheight="48" infinite="0" nextobjectid="47">
+ <tileset firstgid="1" name="bg" tilewidth="48" tileheight="48" tilecount="4" columns="2">
+  <image source="bg.png" width="96" height="96"/>
+ </tileset>
+ <objectgroup name="rail">
+  <object id="29" name="rail" x="510" y="788">
+   <point/>
+  </object>
+  <object id="30" name="rail" x="166" y="643">
+   <point/>
+  </object>
+  <object id="31" name="rail" x="802" y="643">
+   <point/>
+  </object>
+  <object id="32" name="rail" x="507" y="490">
+   <point/>
+  </object>
+  <object id="33" name="rail" x="800" y="337">
+   <point/>
+  </object>
+  <object id="34" name="rail" x="173" y="337">
+   <point/>
+  </object>
+  <object id="35" name="rail" x="512" y="177">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup name="item">
+  <object id="15" name="item1" x="120" y="556">
+   <point/>
+  </object>
+  <object id="16" name="item2" x="707" y="887">
+   <point/>
+  </object>
+  <object id="17" name="item3" x="588" y="741">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup name="money">
+  <object id="18" name="money" x="558" y="444">
+   <point/>
+  </object>
+  <object id="19" name="money" x="509" y="444">
+   <point/>
+  </object>
+  <object id="20" name="money" x="456" y="444">
+   <point/>
+  </object>
+  <object id="21" name="money" x="242" y="307">
+   <point/>
+  </object>
+  <object id="23" name="money" x="723" y="267">
+   <point/>
+  </object>
+  <object id="24" name="money" x="510" y="604">
+   <point/>
+  </object>
+  <object id="26" name="money" x="243" y="207">
+   <point/>
+  </object>
+  <object id="27" name="money" x="564" y="136">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup name="monster">
+  <object id="1" name="monster1" x="510" y="738">
+   <point/>
+  </object>
+  <object id="2" name="monster2" x="788" y="879">
+   <point/>
+  </object>
+  <object id="3" name="monster3" x="168" y="605">
+   <point/>
+  </object>
+  <object id="4" name="monster4" x="807" y="605">
+   <point/>
+  </object>
+  <object id="5" name="monster5" x="468" y="137">
+   <point/>
+  </object>
+  <object id="7" name="monster7" x="799" y="299">
+   <point/>
+  </object>
+ </objectgroup>
+ <layer name="bg" width="20" height="21">
+  <data encoding="csv">
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>

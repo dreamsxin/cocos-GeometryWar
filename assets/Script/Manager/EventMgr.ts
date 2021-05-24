@@ -1,3 +1,10 @@
+/*
+ * @Autor: Rao
+ * @Date: 2021-04-04 21:58:48
+ * @LastEditors: Rao
+ * @LastEditTime: 2021-05-22 23:03:05
+ * @Description: 
+ */
 
 const { ccclass, property } = cc._decorator;
 
@@ -35,10 +42,10 @@ export default class EventMgr {
         }
         let listeners = this._events.get(event);
         listeners.forEach( function(listener) {
-            listener && listener.callFunc.call(listener.target, event, params);
-        }.bind(this));
+            listener && listener.callFunc.call(listener.target, event, params); 
+        }.bind(this)); 
     }
-    removeEventLsitener(event,  target?) {
+    removeEventListener(event,  target?) {
         if (!event || typeof event !== 'string' || !this._events.has(event)) {
             return;
         }
@@ -50,15 +57,14 @@ export default class EventMgr {
             let targets = this._events.get(event);
             for(let i=targets.length-1; i>=0; --i) {
                 if (targets[i].target === target) {
-                    targets[i].splice(i, 1);
+                    targets.splice(i, 1);
                     break;
                 }
             }
         }
-
     }
 }
-// let EventMgr = {
+// let EventMgr = { 
 //     _events: new Map(),
 
 //     addEventListener(event, callFunc, target) {
@@ -85,7 +91,7 @@ export default class EventMgr {
 //             listener && listener.callFunc.call(listener.target, event, params);
 //         }.bind(this));
 //     },
-//     removeEventLsitener(event, callFunc, target) {
+//     removeEventListener(event, callFunc, target) {
 //         if (!event || typeof event !== 'string' || !this._events.has(event)) {
 //             return;
 //         }

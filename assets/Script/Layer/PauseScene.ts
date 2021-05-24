@@ -2,7 +2,7 @@
  * @Autor: Rao
  * @Date: 2021-04-12 17:06:36
  * @LastEditors: Rao
- * @LastEditTime: 2021-04-13 14:57:55
+ * @LastEditTime: 2021-05-17 17:41:39
  * @Description: 
  */
 
@@ -17,24 +17,24 @@ export default class PauseScene extends GameComponent {
 
     onLoad () {
         GameComponent.prototype.onLoad.call(this);
+        cc.director.pause();
         this.uiNodes['_btnContinue'].on('click', this.continueGame, this);
         this.uiNodes['_btnReturn'].on('click', this.exitGame, this);
     }
 
     continueGame() {
         cc.director.resume();
-        UIMgr.getInstance().closeUINode(this.node);
+        UIMgr.getInstance().closeUINode(this.node, 'dialog');
     }
 
     exitGame() {
         cc.director.resume();
-        EventMgr.getInstance().EventDispatcher('closeRelaxScene');
-        EventMgr.getInstance().EventDispatcher('openRelaxMenu');
-        UIMgr.getInstance().closeUINode(this.node);
+        let sceneName = this.node.parent.name;
+        let scenePrefix = sceneName.substr(0, sceneName.length-5);
+        UIMgr.getInstance().closeUINode(this.node, 'dialog');
+        EventMgr.getInstance().EventDispatcher('close'+sceneName);
+        EventMgr.getInstance().EventDispatcher('open'+scenePrefix+'Menu', {'curNode': this.node});
+        console.log(sceneName+scenePrefix);
     }
 
-    // update (dt) {}
-    onDisable() {
-        
-    }
 }

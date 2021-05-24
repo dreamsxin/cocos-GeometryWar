@@ -2,13 +2,16 @@
  * @Autor: Rao
  * @Date: 2021-04-06 21:36:44
  * @LastEditors: Rao
- * @LastEditTime: 2021-04-19 13:43:25
+ * @LastEditTime: 2021-05-22 23:35:29
  * @Description: 
  */
 
 import GameComponent from "../GameComponent";
 import ResMgr from "../Manager/ResMgr";
 import EventMgr from "../Manager/EventMgr";
+import BulletPool from "../NodePool/BulletPool";
+import UIMgr from "../Manager/UIMgr";
+import AudioMgr from "../Manager/AudioMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -22,28 +25,104 @@ export default class Hero extends GameComponent {
     private _life: number;
     private _hp: number;
     private _ack: number;
+    private _score:number;
     private _isUltra: boolean = false; 
     
     private _curExp: number;
     private _needExp:number;
+    private _level:number;
+    private _maxHp:number;
+
     private _anim: cc.Animation;
     private _scale: number;
     private _isRailColli: boolean;
     private _railNode:cc.Node = null;
+    private _bulletType:number;
+
+    private _isRight: boolean = true;
+    
+    private _moneyCount: number = 0;
+    private _obstacleCount:number=0;
+    private _monsterCount:number=0;
+    
+    cameraNode: cc.Node = null;
+
     props = {
         life: this._life,
         hp: this._hp,
         ack: this._ack,
         curExp: this._curExp,
-        needExp: this._needExp
+        needExp: this._needExp,
+        level: this._level,
+        score: this._score,
+    }
+    listEvent () {
+        return ['killMonster', 'reduceLife'];
+    }
+    onEvent (event, params) {
+        if (event === 'killMonster') {
+            this.killMonster(params);
+        }
+        else if (event === 'reduceLife') {
+            this.life--;
+            this.checkLife();
+        }
+    }
+    addScore (score:number) {
+        this.score += score;
+        if (this.score >= 200 && this.score <= 400)  {
+            this.bulletType = 2;
+        }
+        else if (this.score > 400)  {
+            this.bulletType = 3;
+        }
     }
     
+    killMonster(rewards) {
+        this.monsterCount++;
+        this.addScore(rewards.score);
+        this.checkLevel(rewards.exp);
+        
+    }
+    // reduceHp(mAck) {
+    //     this.hp -= mAck;
+    //     if (this.hp <= 0) {
+    //         this.life--;
+    //         this.checkLife();
+    //     }
+    // }
+    checkLevel(exp) {
+        this.curExp += exp;
+        if (this.curExp >= this.needExp) {
+            this.level++;
+            this.curExp -= this.needExp;
+            this.needExp *= 1.6;
+            this.ack *= 1.2;
+        }
+    }
+    checkLife() {
+        if (this.life <= 0) {
+            EventMgr.getInstance().EventDispatcher('playDiesAudio');
+            let herodata = {
+                'score': this.score,
+                'moneyCount': this.moneyCount,
+                'obstacleCount': this.obstacleCount,
+                'monsterCount': this.monsterCount
+            }
+            cc.sys.localStorage.setItem('heroData', JSON.stringify(herodata));
+            EventMgr.getInstance().EventDispatcher('gameover');
+        }
+    }
     onLoad() {
+        GameComponent.prototype.onLoad.call(this);
+        
         let heroConfig = ResMgr.getInstance().getConfig('heroDt')[0];
         this.init(heroConfig);
         
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        
+        this.cameraNode = cc.find('Canvas/Main Camera');
     }
 
     init(heroConfig) {
@@ -59,7 +138,10 @@ export default class Hero extends GameComponent {
         this._anim = this.getComponent(cc.Animation);
         this._anim.play('HeroNormal');
         this._scale = 1;
+        // this._score = 0; 
         this._isRailColli = false;
+        this._maxHp = this.hp;
+        this._bulletType = 1;
     }
     
     get dirX() {
@@ -97,6 +179,41 @@ export default class Hero extends GameComponent {
         this.props['ack'] = num;
     }
 
+    get bulletType() {
+        return this._bulletType;
+    }
+    set bulletType(num: number) {
+        this._bulletType = num;
+    }
+
+    get score() {
+        return this.props['score'];
+    }
+    set score(num: number) {
+        this.props['score'] = num;
+    }
+    
+    get moneyCount() {
+        return this._moneyCount;
+    }
+    set moneyCount(num: number) {
+        this._moneyCount = num;
+    }
+
+    get obstacleCount() {
+        return this._obstacleCount;
+    }
+    set obstacleCount(num: number) {
+        this._obstacleCount = num;
+    }
+
+    get monsterCount() {
+        return this._monsterCount;
+    }
+    set monsterCount(num: number) {
+        this._monsterCount = num;
+    }
+
     get aclY() {
         return this._aclY;
     }
@@ -129,6 +246,20 @@ export default class Hero extends GameComponent {
         this.props['curExp'] = num;
     }
 
+    get level() {
+        return this.props['level'];
+    }
+    set level(num: number) {
+        this.props['level'] = num;
+    }
+    
+    set isRight(rst:boolean) {
+        this._isRight = rst;
+    }
+    get isRight() {
+        return this._isRight;
+    }
+    
     update(dt) {
          this.updateVel(dt);
          this.updatePosition(dt);
@@ -147,14 +278,15 @@ export default class Hero extends GameComponent {
     
     updateVel(dt) {
         this.velY += dt*this.aclY*this.dirY;
-        if(this.velY <= 0) {
+        if(this.velY < 0) {
             this.dirY = -1;
         }
     }
 
     updatePosition(dt) {
         this.node.y += this.velY*dt*this.dirY;
-        this.node.x += this.velX*dt*this.dirX;  
+        this.node.x += this.velX*dt*this.dirX; 
+        // this.cameraNode.y = this.node.y; 
     }
 
     onCollisionEnter(other) {
@@ -163,62 +295,109 @@ export default class Hero extends GameComponent {
             this.velY = 0;
             this.dirY = 0;
             if (this.node.y - other.node.y <= this.node.height*this._scale/2 + other.node.height/2) {
-                // this.node.getScale(cc.v2())
                 this.node.y = other.node.height/2+this.node.height*this._scale/2 - 2;
             } 
         }
-        else if (colliName === 'rail') {
+        if (colliName === 'rail') {
             if (this.dirY === 1) {
                 this.dirY = -1;
                 this.dirX = 0;
             }
             else if(this.dirY === -1) {
                 // Math.abs(other.node.x - this.node.x) < other.node.width/2+this.node.width*this._scale/2 - 2
-                if (this.node.y >= other.node.y+(other.node.height/2+this.node.height*this._scale/2) - 10) {
-                    this.node.y = other.node.y+other.node.height/2+this.node.height*this._scale/2;
+                // 主角陷入rail中
+                if (this.node.y <= other.node.y+(other.node.height/2+this.node.height*this._scale/2)) {
+                    this.node.y = other.node.y+other.node.height/2+this.node.height*this._scale/2-2;
                     this.dirY = 0;
                     this._railNode = other.node;
                     this._isRailColli=true;
-                }
+                } 
                 else {
                     this.dirX = 0;
                 }
             }
         }
 
-        else if (colliName === 'item') {
-            this.node.scale = 1.8;
-            this._scale = 1.8;
-            this._isUltra = true;
-            
-            this.scheduleOnce(function () {
-                this.node.scale = 1;
-                this._scale = 1;
-                this._isUltra = false;
-            }, 3);
+        if (colliName === 'item') {
+            this.score += 30;
+            EventMgr.getInstance().EventDispatcher('updateScore', this.score);
+            EventMgr.getInstance().EventDispatcher('playItemAudio');
+            let isRelaxScene = this.node.parent.name === 'RelaxScene';
+            if (isRelaxScene) {
+                let type = other.node.name.substr(4);
+                if (type === '1') {
+                    this.life ++;
+                    EventMgr.getInstance().EventDispatcher('updateHeroLife');
+                }
+                else {
+                    this.node.scale = 1.8;
+                    this._scale = 1.8;
+                    this._isUltra = true;
+                    
+                    this.scheduleOnce(function () {
+                        this.node.scale = 1;
+                        this._scale = 1;
+                        this._isUltra = false;
+                        this.dirY=-1;
+                    }, 5);
+                }
+                
+            }
+            else {
+                let itemTS = other.node.getComponent('Item');
+                let type = other.node.name.substr(4);
+                if (type === '1') { 
+                    // life
+                    this.life += itemTS.buff;
+                    console.log(this.life + ", " +type);
+                }
+                else if (type === '2') {
+                    // ack   
+                    let ack = itemTS.buff;
+                    this.ack += itemTS.buff;
+                    console.log(this.ack + ", " +type); 
+                }
+                else if (type === '3') {
+                    // exp
+                    this.checkLevel(itemTS.buff);
+                }
+            }            
         }
 
-        else if (colliName === 'obstacle') {
+        if (colliName === 'obstacle') {
             if (this._isUltra) {
-                EventMgr.getInstance().EventDispatcher('rotateObstacle', this.node.getPosition());
+                this.obstacleCount++;
+                this.score+=35;
+                EventMgr.getInstance().EventDispatcher('updateScore', this.score);
+                // EventMgr.getInstance().EventDispatcher('rotateObstacle', this.node.getPosition());
+                EventMgr.getInstance().EventDispatcher('callFuncObstacle', {scene: 'RelaxScene', nodeName: other.node.name,
+                 tsName: 'Obstacle', funcName: 'rotateSelf', args: this.node.getPosition()});
+                 
                 return;
             }
+            
             this.life--;
             EventMgr.getInstance().EventDispatcher('updateHeroLife');
+            this.checkLife();
             
         }
         
-        // else if (colliName === 'rail') {
-        //     this._velY = 0;
-        //     this._aclY = 0; 
-        //     if (this.node.y - other.node.y <= this.node.height*this.node.getScale(cc.v2()).x/2 + other.node.height/2) {
-        //         this.node.y = other.node.height/2+this.node.height*this.node.getScale(cc.v2()).x/2 - 2;
-        //     } 
-        // }
+        if (colliName === 'money') {
+            EventMgr.getInstance().EventDispatcher('playItemAudio');
+            this.score+=30;
+            this.moneyCount++;
+            EventMgr.getInstance().EventDispatcher('updateScore', this.score);
+        }
+        
+        if (colliName === 'monster') {
+            this.life--;
+            this.checkLife();
+        }
     }
     onCollisionStay(other) {
         let colliName = other.node.group;
         if(colliName === 'ground') {
+            this.dirY=0;
             this.node.y = other.node.height/2+this.node.height*this.node.getScale(cc.v2()).x/2 - 2;
         }
     }
@@ -239,13 +418,28 @@ export default class Hero extends GameComponent {
     }
 
     jump() {
-        this.velY = 850;
-        this.dirY = 1;
+        if (this.dirY === 0) {
+            this.velY = 800;
+            this.dirY = 1;
+        }
+    }
+
+    createBullet() {
+        let bulletN = BulletPool.getInstance().getBullet(this.bulletType);
+        if (bulletN) {
+            this.node.parent.addChild(bulletN);
+            bulletN.addComponent('Bullet');
+            let bulletDir = this.isRight ? 1:-1;
+            bulletN.x = this.node.x+this.node.width/2*bulletDir;
+            bulletN.y = this.node.y;
+        }
+        
     }
 
     changeAniamtion(isRight) {
-        !isRight && this._anim.play('HeroTurnLeft');
-        isRight && this._anim.play('HeroNormal');
+        this.isRight = isRight;
+        !this.isRight && this._anim.play('HeroTurnLeft');
+        this.isRight && this._anim.play('HeroNormal');
     }
 
     onKeyDown(event) {
@@ -259,6 +453,27 @@ export default class Hero extends GameComponent {
                 this.velX = 250;
                 this.dirX = -1;
                 this.changeAniamtion(false);   
+                break;
+            case cc.macro.KEY.j:
+                this.createBullet();
+                break;
+            case cc.macro.KEY.space:
+                this.jump();
+                break;
+            case cc.macro.KEY.i:
+                if(!cc.game.isPaused()) {
+                    let heroInfo = {
+                        'level': this.level,
+                        'curExp': this.curExp,
+                        'needExp': this.needExp,
+                        'ack': this.ack,
+                        'life': this.life
+                    }
+                    cc.sys.localStorage.setItem('heroInfo', JSON.stringify(heroInfo));
+                    EventMgr.getInstance().EventDispatcher('playPauseAudio');
+                    cc.director.pause(); 
+                    EventMgr.getInstance().EventDispatcher('openHeroInfoScene', {parentNode: this.node.parent, uiType: 'dialog'});    
+                }
                 break;
         }
     }
@@ -274,5 +489,9 @@ export default class Hero extends GameComponent {
                 this.dirX = 0;
                 break;
         }
+    }
+
+    onDestroy() {
+        GameComponent.prototype.removeEvent.call(this);
     }
 }

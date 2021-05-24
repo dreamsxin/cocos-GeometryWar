@@ -2,7 +2,7 @@
  * @Autor: Rao
  * @Date: 2021-04-04 12:44:23
  * @LastEditors: Rao
- * @LastEditTime: 2021-04-11 21:06:10
+ * @LastEditTime: 2021-05-19 14:32:26
  * @Description: 
  */
 import ResMgr from "../Manager/ResMgr";
@@ -25,6 +25,8 @@ export default class GameMenu extends GameComponent {
     start() {
        // UIMgr.getInstance().addBtnClickEvent(this.uiNodes['_btnRelax'], this, this.enterRelaxMode);
        this.uiNodes['_btnRelax'].on('click', this.enterRelaxMode, this);
+       this.uiNodes['_btnAdventure'].on('click', this.enterAdventureMode, this);
+       this.uiNodes['_btnExit'].on('click', this.exitGame, this);
     }
 
     listEvent() {
@@ -38,8 +40,18 @@ export default class GameMenu extends GameComponent {
 
     enterRelaxMode() {
         // UIMgr.getInstance().openUINode(this.node.parent, 'RelaxMenu');
-        EventMgr.getInstance().EventDispatcher('openRelaxMenu');
-        UIMgr.getInstance().closeUINode(this.node);
+        EventMgr.getInstance().EventDispatcher('openRelaxMenu', {'curNode': this.node});
+        //UIMgr.getInstance().closeUINode(this.node);
     }
 
+    enterAdventureMode() {
+        EventMgr.getInstance().EventDispatcher('openAdventureMenu', {'curNode': this.node});
+        //UIMgr.getInstance().closeUINode(this.node);
+    }
+
+    
+
+    exitGame() {
+        cc.game.end();
+    }
 }

@@ -2,15 +2,19 @@
  * @Autor: Rao
  * @Date: 2021-04-05 14:32:02
  * @LastEditors: Rao
- * @LastEditTime: 2021-04-12 18:47:09
+ * @LastEditTime: 2021-05-22 22:39:36
  * @Description: 
  */
 import ResMgr from "./ResMgr";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class UIMgr {
+
+    lastScene: string = '';
+    haveDialog: boolean = false;    // 弹窗的数量。同一界面只能有一个弹窗
+    
     static instance: UIMgr = null;
     static getInstance() {
         if (!UIMgr.instance) {
@@ -19,22 +23,49 @@ export default class UIMgr {
         return UIMgr.instance;
     }
 
-    openUINode(parentNode, uiName) {
-        let pfbName = ResMgr.getInstance().getPrefab(uiName);
-        let pfbNode = cc.instantiate(pfbName);
-        parentNode.addChild(pfbNode);
-        pfbNode.addComponent(uiName);
+    openUINode(parentNode, uiName, uiType) {
+        if (!this.haveDialog) {
+            let pfbName = ResMgr.getInstance().getPrefab(uiName);
+            let pfbNode = cc.instantiate(pfbName);
+            parentNode.addChild(pfbNode);
+            pfbNode.addComponent(uiName);
+            if (uiType==='dialog') {
+                this.haveDialog = true;
+            }
+        } 
     }
 
-    closeUINode(curNode) {
+    closeUINode(curNode, uiType?) {
+        this.lastScene = curNode.name;
+        if (uiType==='dialog') {
+            this.haveDialog = false;
+        }
         curNode.destroy();
+    }
+
+    setIsHaveDialog(rst:boolean) {
+        this.haveDialog = rst;
+    }
+    
+    getLastScene() {
+        return this.lastScene;
     }
 
     addBtnClickEvent(btnNode: cc.Node, target, callFunc) {
         let botton = btnNode.getComponent(cc.Button);
-        if(!botton) {
+        if (!botton) {
             return;
         }
         btnNode.on('click', callFunc, target);
     }
+
+    private _isAudioPlaying: boolean = true;
+    
+    set isAudioPlaying(rst:boolean) {
+        this._isAudioPlaying = rst;
+    }
+    get isAudioPlaying() {
+        return this._isAudioPlaying;
+    }
+
 }
