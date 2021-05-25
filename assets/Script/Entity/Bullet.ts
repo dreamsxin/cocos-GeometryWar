@@ -2,7 +2,7 @@
  * @Autor: Rao
  * @Date: 2021-04-06 21:37:08
  * @LastEditors: Rao
- * @LastEditTime: 2021-05-14 10:47:44
+ * @LastEditTime: 2021-05-25 23:27:14
  * @Description: 
  */
 // Learn TypeScript:
@@ -82,6 +82,7 @@ export default class Bullet extends cc.Component {
         let colliName = other.node.group;
         if (colliName==='hero') {
             let heroN = this.node.parent.getChildByName('Hero');
+            // let heroN = this.node;.parent.parent.getChildByName('Hero');
             if (heroN) {
                 let heroTs = heroN.getComponent('Hero');
                 this.dir = heroTs.isRight ? 1:-1;

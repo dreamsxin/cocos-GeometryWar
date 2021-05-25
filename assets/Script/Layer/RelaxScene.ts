@@ -2,7 +2,7 @@
  * @Autor: Rao
  * @Date: 2021-04-06 21:41:57
  * @LastEditors: Rao
- * @LastEditTime: 2021-05-24 10:52:10
+ * @LastEditTime: 2021-05-26 00:40:44
  * @Description: 
  */
 
@@ -59,6 +59,7 @@ export default class RelaxScene extends GameComponent {
 
     onLoad() {
         GameComponent.prototype.onLoad.call(this);
+        // cc.sys.localStorage.setItem('curGameScene', this.node.name);
         var colliMgr = cc.director.getCollisionManager();
         if (!colliMgr.enabled) {
             colliMgr.enabled = true;
@@ -72,8 +73,7 @@ export default class RelaxScene extends GameComponent {
         this.runTime = this.uiNodes['topBar/time/_restTime'].getComponent(cc.RichText);
         this.score = this.uiNodes['topBar/_score'].getComponent(cc.Label);
         this.pushObsTypes();
-
-        // EventMgr.getInstance().EventDispatcher('playBgAudio');
+        
     }
 
     start() {

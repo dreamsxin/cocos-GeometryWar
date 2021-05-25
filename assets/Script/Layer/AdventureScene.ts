@@ -2,7 +2,7 @@
  * @Autor: Rao
  * @Date: 2021-05-01 16:43:00
  * @LastEditors: Rao
- * @LastEditTime: 2021-05-24 10:50:16
+ * @LastEditTime: 2021-05-26 00:30:54
  * @Description: 
  */
 
@@ -46,7 +46,7 @@ export default class AdventureScene extends GameComponent {
 
     onLoad() {
         GameComponent.prototype.onLoad.call(this);
-
+        // cc.sys.localStorage.setItem('curGameScene', this.node.name);
         this._tileMap = this.node.getComponent(cc.TiledMap);
         this._mapIndex = cc.sys.localStorage.getItem('curMapIndex');
         this._tileMap.tmxAsset = ResMgr.getInstance().getTileMap('map' + this._mapIndex);
@@ -67,26 +67,15 @@ export default class AdventureScene extends GameComponent {
         let follow = cc.follow(this._heroNode, cc.rect(0, 0, mapWidth, this._mapHeight));
         this.node.runAction(follow);
 
-        //cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
 
     }
 
     changeMap() {
-        this._tileMap.tmxAsset = ResMgr.getInstance().getTileMap('map2');
-        let mapSize = this._tileMap.getMapSize();
-        let mapWidth = mapSize.width * this._tileSize.width;
-        this._mapHeight = mapSize.height * this._tileSize.height;
-        this._cameraMaxY = this._mapHeight / 2 - cc.winSize.height / 2;
-        this._mainCamera = cc.find('Canvas/Main Camera');
-
-        this.createMoney();
-        this.createRail();
-        this.createItem();
-        this.createHero();
-        this.createMonster();
-
-        let follow = cc.follow(this._heroNode, cc.rect(0, 0, mapWidth, this._mapHeight));
-        this.node.runAction(follow);
+        this._mapIndex++;
+        cc.sys.localStorage.setItem('curMapIndex', this._mapIndex);
+        EventMgr.getInstance().EventDispatcher('openAdventureScene', { curNode: this.node });
+        EventMgr.getInstance().EventDispatcher('saveInfo');
     }
 
     createMoney() {
@@ -170,9 +159,7 @@ export default class AdventureScene extends GameComponent {
     update(dt) {
         this.updateCameraPos();
         if (this._heroNode.y >= this._mapHeight) {
-            this._mapIndex++;
-            cc.sys.localStorage.setItem('curMapIndex', this._mapIndex);
-            EventMgr.getInstance().EventDispatcher('openAdventureScene', { curNode: this.node });
+            this.changeMap();
         }
     }
 
@@ -193,13 +180,14 @@ export default class AdventureScene extends GameComponent {
 
                 break;
             case cc.macro.KEY.p:
-                let isPause = cc.game.isPaused();
-                if (isPause) {
-                    cc.game.resume();
-                }
-                else {
-                    cc.game.pause();
-                }
+                // let isPause = cc.game.isPaused();
+                // if (isPause) {
+                //     cc.game.resume();
+                // }
+                // else {
+                //     cc.game.pause();
+                // }
+                EventMgr.getInstance().EventDispatcher('openPauseScene', { 'curNode': this.node, 'parentNode': this.node, 'uiType': 'dialog' });
                 break;
 
         }

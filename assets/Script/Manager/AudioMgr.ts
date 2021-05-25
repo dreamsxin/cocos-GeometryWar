@@ -2,7 +2,7 @@
  * @Autor: Rao
  * @Date: 2021-05-19 12:59:45
  * @LastEditors: Rao
- * @LastEditTime: 2021-05-19 15:54:07
+ * @LastEditTime: 2021-05-25 21:19:10
  * @Description: 
  */
 // Learn TypeScript:
@@ -21,16 +21,16 @@ const { ccclass, property } = cc._decorator;
 export default class AudioMgr extends GameComponent {
 
     @property(cc.AudioClip)
-    bgAudio: cc.AudioClip
+    bgAudio: cc.AudioClip = null;
 
     @property(cc.AudioClip)
-    deiesAudio: cc.AudioClip
+    deiesAudio: cc.AudioClip = null;
 
     @property({ 'type': cc.AudioClip })
-    itemAudio: cc.AudioClip
+    itemAudio: cc.AudioClip = null;
 
     @property(cc.AudioClip)
-    pauseAudio: cc.AudioClip
+    pauseAudio: cc.AudioClip = null;
 
     bg: any;
     item: any;

@@ -1,8 +1,16 @@
+/*
+ * @Autor: Rao
+ * @Date: 2021-05-16 23:22:16
+ * @LastEditors: Rao
+ * @LastEditTime: 2021-05-26 00:25:12
+ * @Description: 
+ */
 
 
 import GameComponent from "../GameComponent";
 import EventMgr from "../Manager/EventMgr";
 import UIMgr from "../Manager/UIMgr";
+import Global from "../Global";
 
 const {ccclass, property} = cc._decorator;
 
@@ -13,11 +21,12 @@ export default class HeroInfoScene extends GameComponent {
 
     onLoad () {
         GameComponent.prototype.onLoad.call(this);
-
+        
+        cc.director.pause(); 
         this.uiNodes['_btnReturn'].on('click', this.closeInfo, this);
 
         let heroInfo = JSON.parse(cc.sys.localStorage.getItem('heroInfo')); 
-        console.log(heroInfo);
+       
         if (heroInfo) {
             let attrs = ['_level', '_exp', '_life', '_ack'];
             for(let attr of attrs) {
@@ -30,6 +39,8 @@ export default class HeroInfoScene extends GameComponent {
                 }
             }
         }
+
+        this.node.y -= this.node.parent.y;
     }
 
     closeInfo () {

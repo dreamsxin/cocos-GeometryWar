@@ -2,7 +2,7 @@
  * @Autor: Rao
  * @Date: 2021-04-12 17:06:36
  * @LastEditors: Rao
- * @LastEditTime: 2021-05-17 17:41:39
+ * @LastEditTime: 2021-05-25 17:20:50
  * @Description: 
  */
 
@@ -20,6 +20,7 @@ export default class PauseScene extends GameComponent {
         cc.director.pause();
         this.uiNodes['_btnContinue'].on('click', this.continueGame, this);
         this.uiNodes['_btnReturn'].on('click', this.exitGame, this);
+        this.node.y -= this.node.parent.y;
     }
 
     continueGame() {

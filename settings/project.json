@@ -8,7 +8,8 @@
     "item",
     "bullet",
     "money",
-    "rail"
+    "rail",
+    "ui"
   ],
   "collision-matrix": [
     [
@@ -93,6 +94,18 @@
       false,
       false,
       true,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
       false
     ]
   ],
