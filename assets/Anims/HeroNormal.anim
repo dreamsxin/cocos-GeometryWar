@@ -1,0 +1,43 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "HeroNormal",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.5166666666666667,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "42780521-44ec-4284-a214-0aa579e134af"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "c87b729e-66ab-476f-bcd7-e4233863662d"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "0ac24062-b814-4bea-bfad-35d294567f5b"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "42780521-44ec-4284-a214-0aa579e134af"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
